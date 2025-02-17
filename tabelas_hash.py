@@ -42,8 +42,21 @@ class tabela_hash:
         self.__tabela_interna[indice].append(novo_elemento)
         self.__tamanho += 1
 
+    def __iter__(self):
+        for lista in self.__tabela_interna:
+            for elemento in lista:
+                yield elemento.chave, elemento.valor
 
+    def __getitem__(self, chave):
+        self.__verificar_chave(chave)
 
+        indice = self.__descobrir_indice(chave)
+        
+        for elemento in self.__tabela_interna[indice]:
+            if elemento.chave == chave:
+                return elemento.valor
+
+        raise KeyError(f'Chave {chave} não encontrada')
 
 
 pessoa = tabela_hash()
@@ -57,6 +70,7 @@ pessoa['salario'] = 12500.00
 pessoa['cpf'] = '07457868399'
 
 print(f'Quantidade de elementos: {len(pessoa)}')
+#print(f'Nome: {pessoa["salario"]}')
 
-print(f'Nome: {pessoa["nome"]}')
-
+for k, v in pessoa:
+    print(f'{k} = {v}')
